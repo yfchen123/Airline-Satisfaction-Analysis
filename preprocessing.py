@@ -1,7 +1,8 @@
+import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.preprocessing import StandardScaler
 
 
 def visualize_missing_values(data):
@@ -40,7 +41,7 @@ def visualize_missing_values(data):
     for bar, count, pct in zip(bars, missing_counts, missing_percentages):
         height = bar.get_height()
         ax.text(bar.get_x() + bar.get_width() / 2, height + (current_ymax * 0.05),
-                f'Missing:\n {count}',  # Just show count for now
+                f'Missing:\n {count}',
                 ha='center', va='bottom', color='black', size=9)
 
     plt.subplots_adjust(bottom=0.4)
@@ -54,6 +55,7 @@ def missing_values_handler(data):
     print(f"Total number of missing values is: {total_missing_values}")"""
 
     # visualize_missing_values(data)
+
     # Amputate missing values
     arrival_delay = data['Arrival Delay in Minutes']
 
@@ -86,6 +88,19 @@ def normalize_std(data):
     data[standard_features + ordinal_features] = preprocessor.fit_transform(data[standard_features + ordinal_features])
 
 
+def handle_categorical(data):
+    """We only have two values for Gender, Customer Type, and Type of travel so we do
+    label encoding for binary."""
+    data['Gender'] = data['Gender'].map({"Male": 1, "Female": 0})
+    data['Customer Type'] = data['Customer Type'].map({"Loyal Customer": 1, "disloyal Customer": 0})
+    data['Type of Travel'] = data['Type of Travel'].map({"Business travel": 1, "Personal Travel": 0})
+
+    '''Class has 3 values instead of 2 and so using label encoding does work as well, hence we do one 
+    hot encoding.
+    '''
+    data = pd.get_dummies(data, columns=['Class'], dtype=int)
+
+
 def preprocess(dataset):
     # I have decided to drop the ID column because it is a unique identifier that does not help with training.
     dataset.drop(columns=["id", "Unnamed: 0"], inplace=True, errors="ignore")
@@ -99,3 +114,5 @@ def preprocess(dataset):
     # Normalize and standardize numerical features
     normalize_std(dataset)
 
+    # Use one-hot encoding or label encoding to handle categorical attributes
+    handle_categorical(dataset)
