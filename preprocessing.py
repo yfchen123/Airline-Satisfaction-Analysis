@@ -2,11 +2,7 @@ import missingno as msno
 import matplotlib.pyplot as plt
 
 
-def missing_values_handler(data):
-    # Checking for the missing values
-    total_missing_values = data.isnull().sum().sum()
-    print(f"Total number of missing values is: {total_missing_values}")
-
+def visualize_missing_values(data):
     # Calculate missing values for every column
     missing_counts = data.isnull().sum()
     # Calculate percentages
@@ -14,7 +10,7 @@ def missing_values_handler(data):
 
     # Visualize the missing values
     plt.figure(figsize=(15, 8))
-    msno_bar = msno.bar(data)
+    msno.bar(data)
     plt.xticks(rotation=45, ha='right')
     plt.title("Missing Values by Column")
 
@@ -41,7 +37,7 @@ def missing_values_handler(data):
     # Annotate each bar with both count and percentage
     for bar, count, pct in zip(bars, missing_counts, missing_percentages):
         height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2, height + (current_ymax * 0.05),
+        ax.text(bar.get_x() + bar.get_width() / 2, height + (current_ymax * 0.05),
                 f'Missing:\n {count}',  # Just show count for now
                 ha='center', va='bottom', color='black', size=9)
 
@@ -50,9 +46,27 @@ def missing_values_handler(data):
     plt.show()
 
 
+def missing_values_handler(data):
+    # Checking for the missing values
+    total_missing_values = data.isnull().sum().sum()
+    print(f"Total number of missing values is: {total_missing_values}")
+
+    # visualize_missing_values(data)
+    # Amputate missing values
+    arrival_delay = data['Arrival Delay in Minutes']
+
+    # Note that this mean does not include the missing values, so we are good
+    mean_arrival_delay = arrival_delay.mean()
+    data['Arrival Delay in Minutes'] = arrival_delay.fillna(mean_arrival_delay)
+
+    # Check if there are any missing values after filling
+    total_missing_values_after = data['Arrival Delay in Minutes'].isnull().sum()
+    print(f"Total number of missing values after filling: {total_missing_values_after}")
+
+
 def preprocess(train_set):
     # These are print statements to check the data
-    print(f"The training data is: {train_set}")
+    # print(f"The training data is: {train_set}")
 
     # Handle the missing values
     missing_values_handler(train_set)
