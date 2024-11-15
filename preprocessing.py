@@ -1,5 +1,7 @@
 import missingno as msno
 import matplotlib.pyplot as plt
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 
 def visualize_missing_values(data):
@@ -48,8 +50,8 @@ def visualize_missing_values(data):
 
 def missing_values_handler(data):
     # Checking for the missing values
-    total_missing_values = data.isnull().sum().sum()
-    print(f"Total number of missing values is: {total_missing_values}")
+    """total_missing_values = data.isnull().sum().sum()
+    print(f"Total number of missing values is: {total_missing_values}")"""
 
     # visualize_missing_values(data)
     # Amputate missing values
@@ -60,13 +62,40 @@ def missing_values_handler(data):
     data['Arrival Delay in Minutes'] = arrival_delay.fillna(mean_arrival_delay)
 
     # Check if there are any missing values after filling
-    total_missing_values_after = data['Arrival Delay in Minutes'].isnull().sum()
-    print(f"Total number of missing values after filling: {total_missing_values_after}")
+    '''total_missing_values_after = data['Arrival Delay in Minutes'].isnull().sum()
+    print(f"Total number of missing values after filling: {total_missing_values_after}")'''
 
 
-def preprocess(train_set):
+def normalize_std(data):
+    # Leave the ordinal features alone and standardize the rest of the numeric features.
+    ordinal_features = ["Inflight wifi service", "Departure/Arrival time convenient", "Ease of Online booking",
+                        "Gate location", "Food and drink", "Online boarding", "Seat comfort", "Inflight entertainment",
+                        "On-board service", "Leg room service", "Baggage handling", "Checkin service",
+                        "Inflight service",
+                        "Cleanliness"]
+    standard_features = ["Age", "Flight Distance", "Arrival Delay in Minutes", "Departure Delay in Minutes"]
+
+    # Create the column transformer
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('standard', StandardScaler(), standard_features),  # Standardize the numerical features
+            ('passthrough', 'passthrough', ordinal_features)  # Pass through the ordinal features without changes
+        ])
+
+    # Apply the transformations to your dataset
+    data[standard_features + ordinal_features] = preprocessor.fit_transform(data[standard_features + ordinal_features])
+
+
+def preprocess(dataset):
+    # I have decided to drop the ID column because it is a unique identifier that does not help with training.
+    dataset.drop(columns=["id", "Unnamed: 0"], inplace=True, errors="ignore")
+
     # These are print statements to check the data
-    # print(f"The training data is: {train_set}")
+    # print(f"The training data is: {dataset}")
 
     # Handle the missing values
-    missing_values_handler(train_set)
+    missing_values_handler(dataset)
+
+    # Normalize and standardize numerical features
+    normalize_std(dataset)
+
