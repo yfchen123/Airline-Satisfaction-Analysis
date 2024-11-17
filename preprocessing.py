@@ -1,7 +1,6 @@
 import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt
-from imblearn.over_sampling import SMOTE
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
 
