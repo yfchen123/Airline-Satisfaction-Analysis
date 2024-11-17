@@ -14,4 +14,5 @@ if __name__ == "__main__":
     y_test = test_set['satisfaction']
 
     # Preprocess the set
-    preprocess(X_train)
+    preprocess(train_set)
+    preprocess(test_set)

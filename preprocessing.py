@@ -1,6 +1,7 @@
 import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt
+from imblearn.over_sampling import SMOTE
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
 
@@ -99,6 +100,17 @@ def handle_categorical(data):
     hot encoding.
     '''
     data = pd.get_dummies(data, columns=['Class'], dtype=int)
+    return data
+
+
+def balance_and_augementation(data):
+    # Check how many of each label there are.
+    """all_values = data["satisfaction"]
+    value_counts = all_values.value_counts()
+    print("Value counts for the 'satisfaction' column:")
+    print(value_counts)"""
+
+    # Since the dataset is balanced we don't need to do anything.
 
 
 def preprocess(dataset):
@@ -114,5 +126,10 @@ def preprocess(dataset):
     # Normalize and standardize numerical features
     normalize_std(dataset)
 
+    # Balance or augment unbalanced attributes
+    balance_and_augementation(dataset)
+
     # Use one-hot encoding or label encoding to handle categorical attributes
-    handle_categorical(dataset)
+    dataset = handle_categorical(dataset)
+
+    print(f"Result is: {dataset}")
