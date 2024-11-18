@@ -130,5 +130,4 @@ def preprocess(dataset):
 
     # Use one-hot encoding or label encoding to handle categorical attributes
     dataset = handle_categorical(dataset)
-
-    print(f"Result is: {dataset}")
+    return dataset

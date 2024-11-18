@@ -1,5 +1,6 @@
 import pandas as pd
 from preprocessing import preprocess
+from exploratory_data_analysis import visualize_data
 
 train_set = pd.read_csv("./Airline Data/train.csv")
 test_set = pd.read_csv("./Airline Data/test.csv")
@@ -14,5 +15,9 @@ if __name__ == "__main__":
     y_test = test_set['satisfaction']
 
     # Preprocess the set
-    preprocess(train_set)
-    preprocess(test_set)
+    cleaned_train_set = preprocess(X_train)
+    cleaned_test_set = preprocess(X_test)
+
+    # Visualize the data
+    visualize_data(cleaned_train_set)
+    # visualize_data(cleaned_test_set)
