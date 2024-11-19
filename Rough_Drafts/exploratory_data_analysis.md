@@ -6,7 +6,7 @@ Our first instict was that the classes would have a disparity between reported s
 
  From both the class satisfaction barplot and the age distribution histogram results, we infered the following:
   
-  – Airline class strongly influences the satisfcation of customers. When running classification algorithms, we have a strong predictor of satisfaction
+  – Airline class strongly influences the satisfcation of customers. When running classification algorithms, we have a strong predictor of satisfaction.
   – The mean customer age of each airline class is significantly different; since airline class and age are related, and class and satisfaction are related, we can say that the two features are associated, and age is a somewhat reliable predictor of satisfaction. 
 
 Flight Distances:
@@ -18,6 +18,8 @@ As a follow up, we were curious whether or not the Flight Distance, a predetermi
 heatmapping:
 
 Instead of checking each pair of features for any signs of correlation manually, we can do it all at once using a correlation matrix, enabled by data preprocessing that handles categorical features. Using the seaborn library once more, we were able to discover more interesting relationships in our dataset. What immediately stood out is a moderate positive correlation between Flight Distance and customers flying in business class, and a moderate negative correlation between Flight Distance and customers flying in economy class. Knowing what we learned using barplots to plot satisfaction against airline class, now our discovery that satisfied customers have a longer average flight distance is much more clear. If business class flyers are more likely to be on longer flights, and economy class flyers are less likely to be on longer flights, then the proportion of satisfied customers with longer flight times will likely be much higher among satisfied customers, since satisfied customers are typically business class flyers. Very similar results are evident in the type of travel; customers flying for business are morely likely to travel with business class. We wondered if we plotted the satisfaction of business vs personal travellers, whether we would find similar results to the plot of airline class vs satisfaction, and we did. Business travelers, of which business class flyers make up a bigger proprotion than Personal travelers, report higher satisfaction levels than economy flyers, and the majority of business travelers report satisfaction.
+
+The heatmap also identifies a consistent correlation disparity between the different elements of a flight experience and airline classes as well. Business class typically positively correlates with a greater customer satisfaction in each service, and economy class typically negatively correlates. Moreover, the different categories of in-flight experience influence eachother as well. For example, a higher satisfaction in flight cleanliness positively coorelates moderately with satisfaction in the food a drink category.
 
 
 
