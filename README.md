@@ -14,6 +14,48 @@ different values of K and starts to drop for large K. Suggesting that we do not 
 points to make an accurate prediction. 
 
 The table looks like the following:
-![img.png](img.png)
+KNN with k=1:
+  Accuracy:  0.92
+  Precision: 0.91
+  Recall:    0.90
+  F1-Score:  0.90
+  AUC-ROC:   0.91
+
+KNN with k=3:
+  Accuracy:  0.93
+  Precision: 0.94
+  Recall:    0.90
+  F1-Score:  0.92
+  AUC-ROC:   0.96
+
+KNN with k=5:
+  Accuracy:  0.93
+  Precision: 0.95
+  Recall:    0.90
+  Recall:    0.89
+  F1-Score:  0.92
+  AUC-ROC:   0.98
+
+KNN with k=7:
+  Accuracy:  0.93
+  Precision: 0.95
+  Recall:    0.90
+  F1-Score:  0.92
+  AUC-ROC:   0.98
+
+KNN with k=15:
+  Accuracy:  0.93
+  Precision: 0.95
+  Recall:    0.89
+  F1-Score:  0.92
+  AUC-ROC:   0.98
+
+KNN with k=50:
+  Accuracy:  0.92
+  Precision: 0.95
+  Recall:    0.87
+  F1-Score:  0.91
+  AUC-ROC:   0.98
+
 
 
