@@ -1,6 +1,5 @@
 import pandas as pd
 from preprocessing import preprocess
-from exploratory_data_analysis import visualize_data
 
 train_set = pd.read_csv("./Airline Data/train.csv")
 test_set = pd.read_csv("./Airline Data/test.csv")
