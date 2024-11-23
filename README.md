@@ -14,6 +14,7 @@ different values of K and starts to drop for large K. Suggesting that we do not 
 points to make an accurate prediction. 
 
 The table looks like the following:
+
 KNN with k=1:
   Accuracy:  0.92
   Precision: 0.91
@@ -32,7 +33,6 @@ KNN with k=5:
   Accuracy:  0.93
   Precision: 0.95
   Recall:    0.90
-  Recall:    0.89
   F1-Score:  0.92
   AUC-ROC:   0.98
 
@@ -57,5 +57,15 @@ KNN with k=50:
   F1-Score:  0.91
   AUC-ROC:   0.98
 
+RandomForest without any parameter tuning gets us great results right out of the box:
+Model Evaluation on Random Forest:
+
+  Accuracy:  0.96
+  Precision: 0.97
+  Recall:    0.94
+  F1-Score:  0.96
+
+The accuracy is much higher than possible with KNN. Suggesting that Random Forest is an excellent choice 
+for this problem. 
 
 
