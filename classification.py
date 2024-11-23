@@ -1,6 +1,36 @@
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
+
+
+def xgboost_classifier(X_train, y_train, X_test, y_test):
+    # Map string labels to numeric values for XGBoost
+    y_train_mapped = y_train.map({"neutral or dissatisfied": 0, "satisfied": 1})
+    y_test_mapped = y_test.map({"neutral or dissatisfied": 0, "satisfied": 1})
+
+    # Initialize the XGBoost classifier
+    clf = XGBClassifier(
+        objective="binary:logistic",
+        random_state=42,
+        eval_metric="logloss",
+    )
+
+    # Fit the classifier to the training data
+    clf.fit(X_train, y_train_mapped)
+
+    # Make predictions on the test set
+    y_pred = clf.predict(X_test)
+    y_pred_proba = clf.predict_proba(X_test)[:, 1]
+
+    # Calculate evaluation metrics
+    accuracy = accuracy_score(y_test_mapped, y_pred)
+    precision = precision_score(y_test_mapped, y_pred)
+    recall = recall_score(y_test_mapped, y_pred)
+    f1 = f1_score(y_test_mapped, y_pred)
+    roc_auc = roc_auc_score(y_test_mapped, y_pred_proba)
+
+    return accuracy, precision, recall, f1, roc_auc
 
 
 def random_forest(X_train, y_train, X_test, y_test):
@@ -73,4 +103,10 @@ def classification(dataset):
     print(f"  Recall:    {recall:.2f}")
     print(f"  F1-Score:  {f1:.2f}")'''
 
-
+    # Train and test the XGBoost model
+    print("Model Evaluation on XGBoost:\n")
+    accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train, y_train, X_test, y_test)
+    print(f"  Accuracy:  {accuracy:.2f}")
+    print(f"  Precision: {precision:.2f}")
+    print(f"  Recall:    {recall:.2f}")
+    print(f"  F1-Score:  {f1:.2f}")

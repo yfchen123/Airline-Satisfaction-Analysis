@@ -58,6 +58,7 @@ KNN with k=50:
   AUC-ROC:   0.98
 
 RandomForest without any parameter tuning gets us great results right out of the box:
+
 Model Evaluation on Random Forest:
 
   Accuracy:  0.96
@@ -67,5 +68,19 @@ Model Evaluation on Random Forest:
 
 The accuracy is much higher than possible with KNN. Suggesting that Random Forest is an excellent choice 
 for this problem. 
+
+I tried to use SVM however due to the vastness of my dataset, the algorithm will not terminate, so I decided
+to switch to a more efficient algorithm called XGBoost.
+
+XGBoost gives me a similar result out of the box as well so it seems to be good for this dataset:
+Model Evaluation on XGBoost:
+
+  Accuracy:  0.96
+  Precision: 0.97
+  Recall:    0.95
+  F1-Score:  0.96
+
+In general, it appears that for my dataset XGBoost and Random Forest work well out of the box and do not 
+need much hyperparameter tuning, as well it seems hyperparameter tuning does not help KNN much.
 
 
