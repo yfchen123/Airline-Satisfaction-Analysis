@@ -1,5 +1,6 @@
 import pandas as pd
 from preprocessing import preprocess
+from classification import classification
 
 train_set = pd.read_csv("./Airline Data/train.csv")
 test_set = pd.read_csv("./Airline Data/test.csv")
@@ -17,6 +18,10 @@ if __name__ == "__main__":
     cleaned_train_set = preprocess(X_train)
     cleaned_test_set = preprocess(X_test)
 
-    # Visualize the data
-    visualize_data(cleaned_train_set)
-    # visualize_data(cleaned_test_set)
+    # Package the datasets for classification
+    dataset = (cleaned_train_set, y_train, cleaned_test_set, y_test)
+
+    # Perform classification
+    classification(dataset)
+
+
