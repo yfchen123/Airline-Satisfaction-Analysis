@@ -2,7 +2,25 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
+from sklearn.feature_selection import mutual_info_classif
+import pandas as pd
 
+def feature_selection(data):
+     # This function performs feature selection
+
+     X_train, y_train, X_test, y_test = data
+
+     # Do Mutual Information (should only be done using training data)
+     mutual_info = mutual_info_classif(X_train, y_train)
+     mutual_info = pd.DataFrame({'score' : mutual_info, 'feature' : X_train.columns}).sort_values(by='score', ascending=False)
+    
+     # We want to drop the worst features
+     num_features_to_drop = 4 # best results i got were with 4
+     worst_features = mutual_info.tail(num_features_to_drop)
+     worst_features = worst_features['feature'].values
+
+     return worst_features
+     
 
 def xgboost_classifier(X_train, y_train, X_test, y_test):
     # Map string labels to numeric values for XGBoost
@@ -78,7 +96,13 @@ def KNN(X_train, y_train, X_test, y_test, k=3):
 
 
 def classification(dataset):
+
     X_train, y_train, X_test, y_test = dataset
+    
+    # Perform feature selection (should be applied to both train and test data)
+    worst_features = feature_selection(dataset)
+    X_train_MI = X_train.drop(worst_features, axis=1)
+    X_test_MI = X_test.drop(worst_features, axis=1)
 
     # Train and test the KNN Model
     '''k_values = [1, 3, 5, 7, 15, 50]
@@ -104,8 +128,15 @@ def classification(dataset):
     print(f"  F1-Score:  {f1:.2f}")'''
 
     # Train and test the XGBoost model
-    print("Model Evaluation on XGBoost:\n")
+    print("Model Evaluation on XGBoost WITHOUT feature selection:\n")
     accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train, y_train, X_test, y_test)
+    print(f"  Accuracy:  {accuracy:.2f}")
+    print(f"  Precision: {precision:.2f}")
+    print(f"  Recall:    {recall:.2f}")
+    print(f"  F1-Score:  {f1:.2f}")
+
+    print("\nModel Evaluation on XGBoost WITH feature selection (Mutual Information):\n")
+    accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train_MI, y_train, X_test_MI, y_test)
     print(f"  Accuracy:  {accuracy:.2f}")
     print(f"  Precision: {precision:.2f}")
     print(f"  Recall:    {recall:.2f}")
