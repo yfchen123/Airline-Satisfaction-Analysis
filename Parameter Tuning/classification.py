@@ -128,6 +128,8 @@ def classification(dataset):
     # Train and test the KNN Model
     print("Model Evaluation on KNN:\n")
 
+    '''
+    # First tune.
     for k in range(1, 51, 5):
         accuracy, precision, recall, f1, auc_roc = KNN(X_train, y_train, X_test, y_test, k=k)
         accuracies.append(accuracy)
@@ -142,6 +144,22 @@ def classification(dataset):
         print("\n")
 
     plot_KNN(range(1, 51, 5), accuracies)
+    '''
+    # Second Tune
+    for k in range(6, 16, 1):
+        accuracy, precision, recall, f1, auc_roc = KNN(X_train, y_train, X_test, y_test, k=k)
+        accuracies.append(accuracy)
+
+        print(f"KNN with k={k}:")
+        print(f"  Accuracy:  {accuracy:.2f}")
+        print(f"  Precision: {precision:.2f}")
+        print(f"  Recall:    {recall:.2f}")
+        print(f"  F1-Score:  {f1:.2f}")
+        if auc_roc is not None:
+            print(f"  AUC-ROC:   {auc_roc:.2f}")
+        print("\n")
+
+    plot_KNN(range(6, 16, 1), accuracies)
 
     '''
     # Train and test the randomForest model

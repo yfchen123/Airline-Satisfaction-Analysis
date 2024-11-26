@@ -88,6 +88,8 @@ So for KNN the rough graph I started with looks like this:
 ![](Parameter%20Tuning/KNNFirsttune.png)
 
 This suggests that the peak is around k = 11, hence I will tune it to be from 6-16, to find the max K.
-
+Next is the graph for zooming in to those 6-16 which further suggests that a k of 9 is optimal so I
+will be using the k = 9 for this KNN model:
+![](Parameter%20Tuning/KNNFineTuned.png)
 
 
