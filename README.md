@@ -92,4 +92,111 @@ Next is the graph for zooming in to those 6-16 which further suggests that a k o
 will be using the k = 9 for this KNN model:
 ![](Parameter%20Tuning/KNNFineTuned.png)
 
+The results for KNN with optimal parameter:
+
+Model Evaluation on KNN:
+
+KNN with k=9:
+  Accuracy:  0.93244
+  Precision: 0.94658
+  Recall:    0.89669
+  F1-Score:  0.92096
+
+So for RandomForest the first parameter to tune is n_estimators, I will do a fairly broad search first:
+Model Evaluation on Random Forest:
+
+RandomForest with n estimators: 100
+  Accuracy:  0.96324
+  Precision: 0.97310
+  Recall:    0.94230
+  F1-Score:  0.95745
+RandomForest with n estimators: 200
+  Accuracy:  0.96285
+  Precision: 0.97248
+  Recall:    0.94203
+  F1-Score:  0.95701
+RandomForest with n estimators: 300
+  Accuracy:  0.96285
+  Precision: 0.97239
+  Recall:    0.94212
+  F1-Score:  0.95702
+RandomForest with n estimators: 400
+  Accuracy:  0.96289
+  Precision: 0.97240
+  Recall:    0.94221
+  F1-Score:  0.95706
+RandomForest with n estimators: 500
+  Accuracy:  0.96277
+  Precision: 0.97230
+  Recall:    0.94203
+  F1-Score:  0.95693
+RandomForest with n estimators: 600
+  Accuracy:  0.96293
+  Precision: 0.97214
+  Recall:    0.94256
+  F1-Score:  0.95712
+RandomForest with n estimators: 700
+  Accuracy:  0.96289
+  Precision: 0.97205
+  Recall:    0.94256
+  F1-Score:  0.95708
+RandomForest with n estimators: 800
+  Accuracy:  0.96277
+  Precision: 0.97205
+  Recall:    0.94230
+  F1-Score:  0.95694
+RandomForest with n estimators: 900
+  Accuracy:  0.96281
+  Precision: 0.97231
+  Recall:    0.94212
+  F1-Score:  0.95697
+
+The values seem to suggest that the value of 100 is best for this application: I will tune it for values
+around 100, probably 1-200.
+![](Parameter%20Tuning/RandomForestN_estimators_tune.png)
+
+It is really hard to see from this graph but the optimal is around 81-121 so I will tune for those 
+only:
+![img.png](Parameter%20Tuning/RandomForestN_estimators_2.png)
+
+Okay I will try to not repeat so many graphs for all the parameters, they will all be in the parameter
+tuning directory instead I will show the final graphs for each parameter:
+
+N_estimators final graph:
+![](Parameter%20Tuning/RandomForestN_estimators_final.png)
+
+113 is optimal here is the results:
+RandomForest with n estimators: 113
+  Accuracy:  0.96347
+  Precision: 0.97320
+  Recall:    0.94273
+  F1-Score:  0.95773
+
+Gini:
+RandomForest with n estimators: 113
+  Accuracy:  0.96347
+  Precision: 0.97320
+  Recall:    0.94273
+  F1-Score:  0.95773
+
+Entropy:
+RandomForest with n estimators: 113
+  Accuracy:  0.96196
+  Precision: 0.97216
+  Recall:    0.94028
+  F1-Score:  0.95596
+
+log_loss:
+RandomForest with n estimators: 113
+  Accuracy:  0.96196
+  Precision: 0.97216
+  Recall:    0.94028
+  F1-Score:  0.95596
+
+As a result it seems Gini is superior.
+
+
+
+
+
 
