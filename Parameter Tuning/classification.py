@@ -106,10 +106,8 @@ def classification(dataset):
     X_test_MI = X_test.drop(worst_features, axis=1)
 
     # Train and test the KNN Model
-    '''k_values = [1, 3, 5, 7, 15, 50]
-
     print("Model Evaluation on KNN:\n")
-    for k in k_values:
+    for k in range(51):
         accuracy, precision, recall, f1, auc_roc = KNN(X_train, y_train, X_test, y_test, k=k)
         print(f"KNN with k={k}:")
         print(f"  Accuracy:  {accuracy:.2f}")
@@ -118,15 +116,16 @@ def classification(dataset):
         print(f"  F1-Score:  {f1:.2f}")
         if auc_roc is not None:
             print(f"  AUC-ROC:   {auc_roc:.2f}")
-        print("\n")'''
+        print("\n")
 
-    '''# Train and test the randomForest model
+    '''
+    # Train and test the randomForest model
     print("Model Evaluation on Random Forest:\n")
     accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test)
     print(f"  Accuracy:  {accuracy:.2f}")
     print(f"  Precision: {precision:.2f}")
     print(f"  Recall:    {recall:.2f}")
-    print(f"  F1-Score:  {f1:.2f}")'''
+    print(f"  F1-Score:  {f1:.2f}")
 
     # Train and test the XGBoost model
     print("Model Evaluation on XGBoost WITHOUT feature selection:\n")
@@ -141,4 +140,4 @@ def classification(dataset):
     print(f"  Accuracy:  {accuracy:.2f}")
     print(f"  Precision: {precision:.2f}")
     print(f"  Recall:    {recall:.2f}")
-    print(f"  F1-Score:  {f1:.2f}")
+    print(f"  F1-Score:  {f1:.2f}")'''
