@@ -1,10 +1,12 @@
+import sys
 import pandas as pd
 from preprocessing import preprocess
+
+sys.path.append('Parameter Tuning')
 from classification import classification
 
 train_set = pd.read_csv("./Airline Data/train.csv")
 test_set = pd.read_csv("./Airline Data/test.csv")
-
 
 if __name__ == "__main__":
     # Drop the satisfaction column from both training and testing sets
@@ -23,5 +25,3 @@ if __name__ == "__main__":
 
     # Perform classification
     classification(dataset)
-
-

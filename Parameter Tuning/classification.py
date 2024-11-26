@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from sklearn.feature_selection import mutual_info_classif
 import pandas as pd
+from matplotlib import pyplot as plt
 
 
 def feature_selection(data):
@@ -97,6 +98,24 @@ def KNN(X_train, y_train, X_test, y_test, k=3):
     return accuracy, precision, recall, f1, auc_roc
 
 
+def plot_KNN(k_values, accuracies):
+    # Plot the results
+    plt.figure(figsize=(10, 6))
+    plt.plot(k_values, accuracies, marker='o', linestyle='-', color='b', label='Accuracy')
+
+    # Add labels, title, and legend
+    plt.xlabel('Number of Neighbors (k)')
+    plt.ylabel('Accuracy')
+    plt.title('KNN Accuracy vs. Number of Neighbors (k)')
+    plt.xticks(k_values, rotation=45)
+    plt.grid(visible=True, linestyle='--', alpha=0.7)
+    plt.legend()
+
+    # Show the graph
+    plt.tight_layout()
+    plt.show()
+
+
 def classification(dataset):
     X_train, y_train, X_test, y_test = dataset
 
@@ -104,11 +123,15 @@ def classification(dataset):
     worst_features = feature_selection(dataset)
     X_train_MI = X_train.drop(worst_features, axis=1)
     X_test_MI = X_test.drop(worst_features, axis=1)
+    accuracies = []
 
     # Train and test the KNN Model
     print("Model Evaluation on KNN:\n")
-    for k in range(51):
+
+    for k in range(1, 51, 5):
         accuracy, precision, recall, f1, auc_roc = KNN(X_train, y_train, X_test, y_test, k=k)
+        accuracies.append(accuracy)
+
         print(f"KNN with k={k}:")
         print(f"  Accuracy:  {accuracy:.2f}")
         print(f"  Precision: {precision:.2f}")
@@ -117,6 +140,8 @@ def classification(dataset):
         if auc_roc is not None:
             print(f"  AUC-ROC:   {auc_roc:.2f}")
         print("\n")
+
+    plot_KNN(range(1, 51, 5), accuracies)
 
     '''
     # Train and test the randomForest model

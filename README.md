@@ -83,4 +83,11 @@ Model Evaluation on XGBoost:
 In general, it appears that for my dataset XGBoost and Random Forest work well out of the box and do not 
 need much hyperparameter tuning, as well it seems hyperparameter tuning does not help KNN much.
 
+Hyperparameter tuning:
+So for KNN the rough graph I started with looks like this:
+![](Parameter Tuning/KNNFirsttune.png)
+
+This suggests that the peak is around k = 11, hence I will tune it to be from 6-16, to find the max K.
+
+
 
