@@ -30,6 +30,6 @@ if __name__ == "__main__":
     cluster(dataset)
     
     # Perform Feature selection and Classification
-    classification(dataset)
+    # classification(dataset)
 
 
