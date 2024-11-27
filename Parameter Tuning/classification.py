@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 from sklearn.feature_selection import mutual_info_classif
 import pandas as pd
+import numpy as np
 from matplotlib import pyplot as plt
 
 
@@ -51,29 +52,6 @@ def xgboost_classifier(X_train, y_train, X_test, y_test):
     f1 = f1_score(y_test_mapped, y_pred)
     roc_auc = roc_auc_score(y_test_mapped, y_pred_proba)
 
-    return accuracy, precision, recall, f1, roc_auc
-
-
-def random_forest(X_train, y_train, X_test, y_test, n_estimators, depth, min_samples):
-    # Initialize the Random Forest classifier
-    clf = RandomForestClassifier(random_state=42, n_estimators=n_estimators, criterion="gini", max_depth=depth,
-                                 min_samples_split=min_samples)
-
-    # Fit the classifier to the training data
-    clf.fit(X_train, y_train)
-
-    # Make predictions on the test set
-    y_pred = clf.predict(X_test)
-    y_pred_proba = clf.predict_proba(X_test)[:, 1]
-
-    # Calculate evaluation metrics
-    accuracy = accuracy_score(y_test, y_pred)
-    precision = precision_score(y_test, y_pred, pos_label="satisfied")
-    recall = recall_score(y_test, y_pred, pos_label="satisfied")
-    f1 = f1_score(y_test, y_pred, pos_label="satisfied")
-    roc_auc = roc_auc_score(y_test.map({"neutral or dissatisfied": 0, "satisfied": 1}), y_pred_proba)
-
-    # Return metrics
     return accuracy, precision, recall, f1, roc_auc
 
 
@@ -133,6 +111,28 @@ def plot_Random_Forest(values, accuracies, var_name):
     # Show the graph
     plt.tight_layout()
     plt.show()
+
+
+def random_forest(X_train, y_train, X_test, y_test):
+    # Initialize the Random Forest classifier
+    clf = RandomForestClassifier(random_state=42, n_estimators=113, max_depth=51)
+
+    # Fit the classifier to the training data
+    clf.fit(X_train, y_train)
+
+    # Make predictions on the test set
+    y_pred = clf.predict(X_test)
+    y_pred_proba = clf.predict_proba(X_test)[:, 1]
+
+    # Calculate evaluation metrics
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, pos_label="satisfied")
+    recall = recall_score(y_test, y_pred, pos_label="satisfied")
+    f1 = f1_score(y_test, y_pred, pos_label="satisfied")
+    roc_auc = roc_auc_score(y_test.map({"neutral or dissatisfied": 0, "satisfied": 1}), y_pred_proba)
+
+    # Return metrics
+    return accuracy, precision, recall, f1, roc_auc
 
 
 def classification(dataset):
@@ -205,20 +205,56 @@ def classification(dataset):
     plot_Random_Forest(range(109, 117, 1), accuracies, "n_estimators")'''
 
     # Tune parameters
-    for min_samples in range(1, 100, 10):
+
+    '''for max_leaf in range(2, 103, 10):
         accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test, 113, 51,
-                                                                 min_samples)
+                                                                 2, 1, 0.0, "sqrt", max_leaf)
         accuracies.append(accuracy)
-        print(f"RandomForest with min_samples of: {min_samples}")
+        print(f"RandomForest with max leaf nodes of: {max_leaf}")
         print(f"  Accuracy:  {accuracy:.5f}")
         print(f"  Precision: {precision:.5f}")
         print(f"  Recall:    {recall:.5f}")
         print(f"  F1-Score:  {f1:.5f}")
 
-    plot_Random_Forest(range(1, 100, 10), accuracies, "min_samples")
+    plot_Random_Forest(range(2, 103, 10), accuracies, "max_leaf_nodes")'''
 
+    accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test)
+    accuracies.append(accuracy)
+    print(f"RandomForest with bootstrap nodes of: True")
+    print(f"  Accuracy:  {accuracy:.5f}")
+    print(f"  Precision: {precision:.5f}")
+    print(f"  Recall:    {recall:.5f}")
+    print(f"  F1-Score:  {f1:.5f}")
 
     '''
+    
+    accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test, 113, 51,
+                                                             2, 1, 0.0, None)
+    accuracies.append(accuracy)
+    print(f"RandomForest with max_feature of: None")
+    print(f"  Accuracy:  {accuracy:.5f}")
+    print(f"  Precision: {precision:.5f}")
+    print(f"  Recall:    {recall:.5f}")
+    print(f"  F1-Score:  {f1:.5f}")
+    
+    
+    # Decimal tuning
+    min_weight_fraction_values = np.arange(0.0, 0.5, 0.05)
+    for min_weight_fraction_leaf in min_weight_fraction_values:
+        accuracy, precision, recall, f1, auc_roc = random_forest(
+            X_train, y_train, X_test, y_test, 113, 51, 2, 1, min_weight_fraction_leaf
+        )
+        accuracies.append(accuracy)
+        print(f"RandomForest with min_weight_fraction_leaf of: {min_weight_fraction_leaf:.2f}")
+        print(f"  Accuracy:  {accuracy:.5f}")
+        print(f"  Precision: {precision:.5f}")
+        print(f"  Recall:    {recall:.5f}")
+        print(f"  F1-Score:  {f1:.5f}")
+
+    # Plot using the decimal values
+    plot_Random_Forest(min_weight_fraction_values, accuracies, "min_weight_fraction_leaf")
+
+    
     # Train and test the XGBoost model
     print("Model Evaluation on XGBoost WITHOUT feature selection:\n")
     accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train, y_train, X_test, y_test)

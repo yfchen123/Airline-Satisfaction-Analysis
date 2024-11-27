@@ -153,17 +153,17 @@ RandomForest with n estimators: 900
 
 The values seem to suggest that the value of 100 is best for this application: I will tune it for values
 around 100, probably 1-200.
-![](Parameter%20Tuning/RandomForestN_estimators_tune.png)
+![](Parameter%20Tuning/RFN_estimators_tune.png)
 
 It is really hard to see from this graph but the optimal is around 81-121 so I will tune for those 
 only:
-![img.png](Parameter%20Tuning/RandomForestN_estimators_2.png)
+![img.png](Parameter%20Tuning/RFN_estimators_2.png)
 
 Okay I will try to not repeat so many graphs for all the parameters, they will all be in the parameter
 tuning directory instead I will show the final graphs for each parameter:
 
 N_estimators final graph:
-![](Parameter%20Tuning/RandomForestN_estimators_final.png)
+![](Parameter%20Tuning/RFN_estimators_final.png)
 
 113 is optimal here is the results:
 
@@ -199,8 +199,52 @@ As a result it seems Gini is superior.
 Next final depth graph:
 No improvements after 51 so:
 
-![](Parameter%20Tuning/RandomForest_depth.png)
+![](Parameter%20Tuning/RF_depth.png)
 We will be using 51 max-depth.
+
+It seems smaller min_samples is better, so we will just use the minimum which is 2:
+![](Parameter%20Tuning/RF_min_samples.png)
+
+The same is true for min_samples_leaf, so we will be using the default:
+![](Parameter%20Tuning/RF.png)
+
+As before lower is better for min_weight_fraction:
+![](Parameter%20Tuning/RF_min_weight.png)
+
+Next for max_features:
+
+Sqrt:
+RandomForest with max_feature of: sqrt
+  Accuracy:  0.96347
+  Precision: 0.97320
+  Recall:    0.94273
+  F1-Score:  0.95773
+
+log2:
+RandomForest with max_feature of: log2
+  Accuracy:  0.96347
+  Precision: 0.97320
+  Recall:    0.94273
+  F1-Score:  0.95773
+
+None:
+RandomForest with max_feature of: None
+  Accuracy:  0.96185
+  Precision: 0.96986
+  Recall:    0.94238
+  F1-Score:  0.95592
+
+Well it looks like just leaving it as the default is good.
+
+The optimal parameters for RandomForest is n_estimators = 113 and max_depth of 51.
+
+Result:
+  Accuracy:  0.96347
+  Precision: 0.97320
+  Recall:    0.94273
+  F1-Score:  0.95773
+
+
 
 
 
