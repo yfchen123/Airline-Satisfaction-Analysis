@@ -57,7 +57,7 @@ KNN with k=50:
   F1-Score:  0.91
   AUC-ROC:   0.98
 
-RandomForest without any parameter tuning gets us great results right out of the box:
+RandomForest without any Parameter%20Tuning gets us great results right out of the box:
 
 Model Evaluation on Random Forest:
 
@@ -81,16 +81,16 @@ Model Evaluation on XGBoost:
   F1-Score:  0.96
 
 In general, it appears that for my dataset XGBoost and Random Forest work well out of the box and do not 
-need much hyperparameter tuning, as well it seems hyperparameter tuning does not help KNN much.
+need much hyperParameter%20Tuning, as well it seems hyperParameter%20Tuning does not help KNN much.
 
-Hyperparameter tuning:
+HyperParameter%20Tuning:
 So for KNN the rough graph I started with looks like this:
-![](Parameter%20Tuning/KNNFirsttune.png)
+![](Parameter%20Tuning/KNN/KNNFirsttune.png)
 
 This suggests that the peak is around k = 11, hence I will tune it to be from 6-16, to find the max K.
 Next is the graph for zooming in to those 6-16 which further suggests that a k of 9 is optimal so I
 will be using the k = 9 for this KNN model:
-![](Parameter%20Tuning/KNNFineTuned.png)
+![](Parameter%20Tuning/KNN/KNNFineTuned.png)
 
 The results for KNN with optimal parameter:
 
@@ -153,17 +153,17 @@ RandomForest with n estimators: 900
 
 The values seem to suggest that the value of 100 is best for this application: I will tune it for values
 around 100, probably 1-200.
-![](Parameter%20Tuning/RFN_estimators_tune.png)
+![](Parameter%20Tuning/RF/RFN_estimators_tune.png)
 
 It is really hard to see from this graph but the optimal is around 81-121 so I will tune for those 
 only:
-![img.png](Parameter%20Tuning/RFN_estimators_2.png)
+![img.png](Parameter%20Tuning/RF/RFN_estimators_2.png)
 
 Okay I will try to not repeat so many graphs for all the parameters, they will all be in the parameter
 tuning directory instead I will show the final graphs for each parameter:
 
 N_estimators final graph:
-![](Parameter%20Tuning/RFN_estimators_final.png)
+![](Parameter%20Tuning/RF/RFN_estimators_final.png)
 
 113 is optimal here is the results:
 
@@ -199,17 +199,17 @@ As a result it seems Gini is superior.
 Next final depth graph:
 No improvements after 51 so:
 
-![](Parameter%20Tuning/RF_depth.png)
+![](Parameter%20Tuning/RF/RF_depth.png)
 We will be using 51 max-depth.
 
 It seems smaller min_samples is better, so we will just use the minimum which is 2:
-![](Parameter%20Tuning/RF_min_samples.png)
+![](Parameter%20Tuning/RF/RF_min_samples.png)
 
 The same is true for min_samples_leaf, so we will be using the default:
-![](Parameter%20Tuning/RF.png)
+![](Parameter%20Tuning/RF/RF.png)
 
 As before lower is better for min_weight_fraction:
-![](Parameter%20Tuning/RF_min_weight.png)
+![](Parameter%20Tuning/RF/RF_min_weight.png)
 
 Next for max_features:
 
@@ -243,6 +243,143 @@ Result:
   Precision: 0.97320
   Recall:    0.94273
   F1-Score:  0.95773
+
+
+XGBoost:
+Feature selection seems to lower results:
+Model Evaluation on XGBoost WITHOUT feature selection:
+
+  Accuracy:  0.96354
+  Precision: 0.97082
+  Recall:    0.94537
+  F1-Score:  0.95792
+
+Model Evaluation on XGBoost WITH feature selection (Mutual Information):
+
+  Accuracy:  0.96297
+  Precision: 0.97019
+  Recall:    0.94466
+  F1-Score:  0.95726
+
+Hence, I will not be doing it.
+
+XGBoost for max depth:
+![](Parameter%20Tuning/XGBoost/XGBoost_max_depth_final.png)
+
+7 seems to be optimal:
+Evaluating XGBoost with max_depth=7...
+  max_depth: 7
+  Accuracy:  0.96408
+  Precision: 0.97222
+  Recall:    0.94519
+  F1-Score:  0.95851
+  AUC-ROC:   0.99510
+
+Here is the graph for min_child_weight:
+![](Parameter%20Tuning/XGBoost/XGBoost_min_child_weight.png)
+
+2 seems to be optimal:
+Evaluating XGBoost with min_child_weight=2...
+  min_child_weight: 2
+  Accuracy:  0.96416
+  Precision: 0.97146
+  Recall:    0.94615
+  F1-Score:  0.95864
+  AUC-ROC:   0.99504
+
+Gamma attribute:
+![](Parameter%20Tuning/XGBoost/XGBoost_gamma.png)
+
+Seems like the default of 0 is best:
+Evaluating XGBoost with gamma=0...
+  gamma: 0
+  Accuracy:  0.96416
+  Precision: 0.97146
+  Recall:    0.94615
+  F1-Score:  0.95864
+  AUC-ROC:   0.99504
+
+Next doing lambda:
+![](Parameter%20Tuning/XGBoost/XGBoost_lambda.png)
+
+The optimal appears to be 3:
+Evaluating XGBoost with reg_lambda=3...
+  reg_lambda: 3
+  Accuracy:  0.96424
+  Precision: 0.97197
+  Recall:    0.94580
+  F1-Score:  0.95871
+  AUC-ROC:   0.99524
+
+Alpha:
+Leaving it as 0 seems good:
+
+Evaluating XGBoost with alpha=0...
+  alpha: 0
+  Accuracy:  0.96424
+  Precision: 0.97197
+  Recall:    0.94580
+  F1-Score:  0.95871
+  AUC-ROC:   0.99524
+
+n_estimators:
+125 and 126 have the same accuracy, so I will just use 125.
+![](Parameter%20Tuning/XGBoost/XGBoost_n_estimators_final.png)
+
+Results for 125:
+
+Evaluating XGBoost with n_estimators=125...
+  n_estimators: 125
+  Accuracy:  0.96431
+  Precision: 0.97155
+  Recall:    0.94642
+  F1-Score:  0.95882
+  AUC-ROC:   0.99519
+
+Graph for Learning Rate:
+![](Parameter%20Tuning/XGBoost/Learning_rate_final.png)
+
+Optimal seems to be 0.3:
+Evaluating XGBoost with learning_rate=0.30...
+  Learning Rate: 0.30
+  Accuracy:  0.96431
+  Precision: 0.97155
+  Recall:    0.94642
+  F1-Score:  0.95882
+  AUC-ROC:   0.99519
+
+GPU_Hist:
+  Accuracy:  0.96312
+  Precision: 0.97088
+  Recall:    0.94431
+  F1-Score:  0.95741
+  AUC-ROC:   0.99510
+
+Hist:
+  Accuracy:  0.96431
+  Precision: 0.97155
+  Recall:    0.94642
+  F1-Score:  0.95882
+  AUC-ROC:   0.99519
+
+Approx:
+  Accuracy:  0.96347
+  Precision: 0.97082
+  Recall:    0.94519
+  F1-Score:  0.95783
+  AUC-ROC:   0.99506
+
+Exact:
+  Accuracy:  0.96374
+  Precision: 0.97083
+  Recall:    0.94580
+  F1-Score:  0.95816
+  AUC-ROC:   0.99528
+
+I will just stick with auto since it gives the best performance.
+
+
+
 
 
 

@@ -26,35 +26,6 @@ def feature_selection(data):
     return worst_features
 
 
-def xgboost_classifier(X_train, y_train, X_test, y_test):
-    # Map string labels to numeric values for XGBoost
-    y_train_mapped = y_train.map({"neutral or dissatisfied": 0, "satisfied": 1})
-    y_test_mapped = y_test.map({"neutral or dissatisfied": 0, "satisfied": 1})
-
-    # Initialize the XGBoost classifier
-    clf = XGBClassifier(
-        objective="binary:logistic",
-        random_state=42,
-        eval_metric="logloss",
-    )
-
-    # Fit the classifier to the training data
-    clf.fit(X_train, y_train_mapped)
-
-    # Make predictions on the test set
-    y_pred = clf.predict(X_test)
-    y_pred_proba = clf.predict_proba(X_test)[:, 1]
-
-    # Calculate evaluation metrics
-    accuracy = accuracy_score(y_test_mapped, y_pred)
-    precision = precision_score(y_test_mapped, y_pred)
-    recall = recall_score(y_test_mapped, y_pred)
-    f1 = f1_score(y_test_mapped, y_pred)
-    roc_auc = roc_auc_score(y_test_mapped, y_pred_proba)
-
-    return accuracy, precision, recall, f1, roc_auc
-
-
 def KNN(X_train, y_train, X_test, y_test, k=3):
     # Initialize the KNN classifier with k neighbors
     knn = KNeighborsClassifier(n_neighbors=k)
@@ -113,6 +84,24 @@ def plot_Random_Forest(values, accuracies, var_name):
     plt.show()
 
 
+def plot_XGBoost(max_depth_values, accuracies, var_name):
+    # Plot the results
+    plt.figure(figsize=(10, 6))
+    plt.plot(max_depth_values, accuracies, marker='o', linestyle='-', color='b', label='Accuracy')
+
+    # Add labels, title, and legend
+    plt.xlabel(f'{var_name}')
+    plt.ylabel('Accuracy')
+    plt.title(f'XGBoost Accuracy vs. {var_name}')
+    plt.xticks(max_depth_values, rotation=45)
+    plt.grid(visible=True, linestyle='--', alpha=0.7)
+    plt.legend()
+
+    # Show the graph
+    plt.tight_layout()
+    plt.show()
+
+
 def random_forest(X_train, y_train, X_test, y_test):
     # Initialize the Random Forest classifier
     clf = RandomForestClassifier(random_state=42, n_estimators=113, max_depth=51)
@@ -132,6 +121,37 @@ def random_forest(X_train, y_train, X_test, y_test):
     roc_auc = roc_auc_score(y_test.map({"neutral or dissatisfied": 0, "satisfied": 1}), y_pred_proba)
 
     # Return metrics
+    return accuracy, precision, recall, f1, roc_auc
+
+
+def xgboost_classifier(X_train, y_train, X_test, y_test):
+    # Map string labels to numeric values for XGBoost
+    y_train_mapped = y_train.map({"neutral or dissatisfied": 0, "satisfied": 1})
+    y_test_mapped = y_test.map({"neutral or dissatisfied": 0, "satisfied": 1})
+
+    # Initialize the XGBoost classifier
+    clf = XGBClassifier(
+        random_state=42,
+        max_depth=7,
+        min_child_weight=2,
+        reg_lambda=3,
+        n_estimators=125,
+    )
+
+    # Fit the classifier to the training data
+    clf.fit(X_train, y_train_mapped)
+
+    # Make predictions on the test set
+    y_pred = clf.predict(X_test)
+    y_pred_proba = clf.predict_proba(X_test)[:, 1]
+
+    # Calculate evaluation metrics
+    accuracy = accuracy_score(y_test_mapped, y_pred)
+    precision = precision_score(y_test_mapped, y_pred)
+    recall = recall_score(y_test_mapped, y_pred)
+    f1 = f1_score(y_test_mapped, y_pred)
+    roc_auc = roc_auc_score(y_test_mapped, y_pred_proba)
+
     return accuracy, precision, recall, f1, roc_auc
 
 
@@ -189,11 +209,10 @@ def classification(dataset):
     print(f"  Precision: {precision:.5f}")
     print(f"  Recall:    {recall:.5f}")
     print(f"  F1-Score:  {f1:.5f}")
-    '''
 
     # Finetune n_estimators first
     print("Model Evaluation on Random Forest:\n")
-    '''for n in range(109, 117, 1):
+    for n in range(109, 117, 1):
         accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test, n)
         accuracies.append(accuracy)
         print(f"RandomForest with n estimators: {n}")
@@ -202,11 +221,11 @@ def classification(dataset):
         print(f"  Recall:    {recall:.5f}")
         print(f"  F1-Score:  {f1:.5f}")
 
-    plot_Random_Forest(range(109, 117, 1), accuracies, "n_estimators")'''
+    plot_Random_Forest(range(109, 117, 1), accuracies, "n_estimators")
 
     # Tune parameters
 
-    '''for max_leaf in range(2, 103, 10):
+    for max_leaf in range(2, 103, 10):
         accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test, 113, 51,
                                                                  2, 1, 0.0, "sqrt", max_leaf)
         accuracies.append(accuracy)
@@ -216,7 +235,7 @@ def classification(dataset):
         print(f"  Recall:    {recall:.5f}")
         print(f"  F1-Score:  {f1:.5f}")
 
-    plot_Random_Forest(range(2, 103, 10), accuracies, "max_leaf_nodes")'''
+    plot_Random_Forest(range(2, 103, 10), accuracies, "max_leaf_nodes")
 
     accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test)
     accuracies.append(accuracy)
@@ -225,8 +244,6 @@ def classification(dataset):
     print(f"  Precision: {precision:.5f}")
     print(f"  Recall:    {recall:.5f}")
     print(f"  F1-Score:  {f1:.5f}")
-
-    '''
     
     accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test, 113, 51,
                                                              2, 1, 0.0, None)
@@ -253,19 +270,65 @@ def classification(dataset):
 
     # Plot using the decimal values
     plot_Random_Forest(min_weight_fraction_values, accuracies, "min_weight_fraction_leaf")
+    '''
 
-    
-    # Train and test the XGBoost model
+    ''' # Train and test the XGBoost model
     print("Model Evaluation on XGBoost WITHOUT feature selection:\n")
     accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train, y_train, X_test, y_test)
-    print(f"  Accuracy:  {accuracy:.2f}")
-    print(f"  Precision: {precision:.2f}")
-    print(f"  Recall:    {recall:.2f}")
-    print(f"  F1-Score:  {f1:.2f}")
+    print(f"  Accuracy:  {accuracy:.5f}")
+    print(f"  Precision: {precision:.5f}")
+    print(f"  Recall:    {recall:.5f}")
+    print(f"  F1-Score:  {f1:.5f}")
 
-    print("\nModel Evaluation on XGBoost WITH feature selection (Mutual Information):\n")
-    accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train_MI, y_train, X_test_MI, y_test)
-    print(f"  Accuracy:  {accuracy:.2f}")
-    print(f"  Precision: {precision:.2f}")
-    print(f"  Recall:    {recall:.2f}")
-    print(f"  F1-Score:  {f1:.2f}")'''
+    # Initialize list to store results for analysis
+    accuracies = []
+
+    print("Model Evaluation on XGBoost WITHOUT feature selection:\n")
+
+    # Use a range of learning rates from 0.2 to 0.4 with a step of 0.01
+    for learning_rate in np.arange(0.2, 0.4, 0.01):
+        print(f"Evaluating XGBoost with learning_rate={learning_rate:.2f}...")
+
+        # Evaluate the model
+        accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train, y_train, X_test, y_test)
+        accuracies.append(accuracy)
+
+        # Print the metrics
+        print(f"  Learning Rate: {learning_rate:.2f}")
+        print(f"  Accuracy:  {accuracy:.5f}")
+        print(f"  Precision: {precision:.5f}")
+        print(f"  Recall:    {recall:.5f}")
+        print(f"  F1-Score:  {f1:.5f}")
+        print(f"  AUC-ROC:   {auc_roc:.5f}")
+
+    # Plot the results
+    plot_XGBoost(list(np.arange(0.2, 0.4, 0.01)), accuracies, "learning_rate")
+
+    print(f"Evaluating XGBoost with method...")
+
+     # Evaluate the model
+    accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train, y_train, X_test, y_test, 7,
+                                                                  2, 0, 3, 0, 125, 0.3, )
+    accuracies.append(accuracy)
+
+    # Print the metrics
+    print(f"  method: ")
+    print(f"  Accuracy:  {accuracy:.5f}")
+    print(f"  Precision: {precision:.5f}")
+    print(f"  Recall:    {recall:.5f}")
+    print(f"  F1-Score:  {f1:.5f}")
+    print(f"  AUC-ROC:   {auc_roc:.5f}")
+    '''
+
+    print(f"Evaluating XGBoost: ")
+
+    # Evaluate the model
+    accuracy, precision, recall, f1, auc_roc = xgboost_classifier(X_train, y_train, X_test, y_test)
+
+    # Print the metrics
+    print(f"  Accuracy:  {accuracy:.5f}")
+    print(f"  Precision: {precision:.5f}")
+    print(f"  Recall:    {recall:.5f}")
+    print(f"  F1-Score:  {f1:.5f}")
+    print(f"  AUC-ROC:   {auc_roc:.5f}")
+
