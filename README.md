@@ -166,6 +166,7 @@ N_estimators final graph:
 ![](Parameter%20Tuning/RandomForestN_estimators_final.png)
 
 113 is optimal here is the results:
+
 RandomForest with n estimators: 113
   Accuracy:  0.96347
   Precision: 0.97320
@@ -194,6 +195,14 @@ RandomForest with n estimators: 113
   F1-Score:  0.95596
 
 As a result it seems Gini is superior.
+
+Next final depth graph:
+No improvements after 51 so:
+
+![](Parameter%20Tuning/RandomForest_depth.png)
+We will be using 51 max-depth.
+
+
 
 
 

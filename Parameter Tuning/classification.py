@@ -54,9 +54,10 @@ def xgboost_classifier(X_train, y_train, X_test, y_test):
     return accuracy, precision, recall, f1, roc_auc
 
 
-def random_forest(X_train, y_train, X_test, y_test, n_estimators):
+def random_forest(X_train, y_train, X_test, y_test, n_estimators, depth, min_samples):
     # Initialize the Random Forest classifier
-    clf = RandomForestClassifier(random_state=42, n_estimators=n_estimators, criterion="gini")
+    clf = RandomForestClassifier(random_state=42, n_estimators=n_estimators, criterion="gini", max_depth=depth,
+                                 min_samples_split=min_samples)
 
     # Fit the classifier to the training data
     clf.fit(X_train, y_train)
@@ -203,14 +204,18 @@ def classification(dataset):
 
     plot_Random_Forest(range(109, 117, 1), accuracies, "n_estimators")'''
 
-    # Tune criteria
-    accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test, 113)
-    accuracies.append(accuracy)
-    print(f"RandomForest with n estimators: {113}")
-    print(f"  Accuracy:  {accuracy:.5f}")
-    print(f"  Precision: {precision:.5f}")
-    print(f"  Recall:    {recall:.5f}")
-    print(f"  F1-Score:  {f1:.5f}")
+    # Tune parameters
+    for min_samples in range(1, 100, 10):
+        accuracy, precision, recall, f1, auc_roc = random_forest(X_train, y_train, X_test, y_test, 113, 51,
+                                                                 min_samples)
+        accuracies.append(accuracy)
+        print(f"RandomForest with min_samples of: {min_samples}")
+        print(f"  Accuracy:  {accuracy:.5f}")
+        print(f"  Precision: {precision:.5f}")
+        print(f"  Recall:    {recall:.5f}")
+        print(f"  F1-Score:  {f1:.5f}")
+
+    plot_Random_Forest(range(1, 100, 10), accuracies, "min_samples")
 
 
     '''
