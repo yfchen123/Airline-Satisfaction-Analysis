@@ -4,6 +4,8 @@ from preprocessing import preprocess
 
 sys.path.append('Parameter Tuning')
 from classification import classification
+from outlier_detection import detect_outliers
+from clustering import cluster
 
 train_set = pd.read_csv("./Airline Data/train.csv")
 test_set = pd.read_csv("./Airline Data/test.csv")
@@ -23,5 +25,11 @@ if __name__ == "__main__":
     # Package the datasets for classification
     dataset = (cleaned_train_set, y_train, cleaned_test_set, y_test)
 
-    # Perform classification
-    classification(dataset)
+    # Perform Outlier Detection
+    detect_outliers(dataset)
+
+    # Perform Clustering
+    cluster(dataset)
+    
+    # Perform Feature selection and Classification
+    # classification(dataset)
