@@ -107,36 +107,48 @@ The sillhouete scores for KMeans and DBSCAN were very close, typically both arou
 
  On the other hand, another cluster the same proportion of loyal customers (nearly 100%) as our previously discussed clusters, but only has rougly 11% of its customers satisfied! 80% of these customers are in the economy class, 12% are in economy plus, and the final 8% of customers are business class. Even if all of those 10% satisfied customers came from the economy class, that would still mean that 70% of loyal economy class fliers will return to this particular airline despite their dissatisfaction. This is quite a valuable finding! It means that loyal economy fliers do not need to be satisfied in order to return to this using this airline. We cannot be certain as to why, but we know that the satisfaction of economy class fliers is not as important as that of the business class fliers.
 
-## Feature selection
+ From these results, we conclude that our dataset may not be the most appropriate for a clustering task. Our clusters overlap a lot due to correlation between features. More specifically, there are plenty of ordinal features who's values predict one another to some degree, leading to mixed results. The conclusions drawn from our clustering data is questionable in its validity. 
 
 ## Classification
 
+### Trying different classifiers:
 The three algorithms I did for classification were KNN, XGBoost and RandomForest. I attempted to do SVM, but
 that algorithm was too slow on my dataset, so I skipped it. XGBoost and RandomForest got close to optimal
 results even without hyperparameter tuning, it had good results out of the box. As for KNN, tuning the K value
 made little difference on the results, suggesting that for my problem k does not matter that much. For reference
 the accuracies are listed below: 
 
-Model Evaluation on Random Forest:
+**Model Evaluation on Random Forest:**\
+  Accuracy:  0.96\
+  Precision: 0.97\
+  Recall:    0.94\
+  F1-Score:  0.96\
 
-  Accuracy:  0.96
-  Precision: 0.97
-  Recall:    0.94
+**Model Evaluation on XGBoost:**\
+Accuracy:  0.96\
+  Precision: 0.97\
+  Recall:    0.94\
   F1-Score:  0.96
 
-Model Evaluation on XGBoost:
-
-  Accuracy:  0.96
-  Precision: 0.97
-  Recall:    0.95
-  F1-Score:  0.96
-
-KNN with k=3:
-  Accuracy:  0.93
-  Precision: 0.94
-  Recall:    0.90
-  F1-Score:  0.92
+**KNN with k=3:**\
+  Accuracy:  0.93\
+  Precision: 0.94\
+  Recall:    0.90\
+  F1-Score:  0.92\
   AUC-ROC:   0.96
+
+### Applying feature selection:
+
+Using a mutual information feature selection model from sklearn, we find that our XGBoost Classification results only improve in the Recall category, and only by 1 percent! Making the feature selector run was very simple, we just had to sort the results of the feature selector, and choose the bottom results to drop. Our best results were gained by dropping 3 of the worst features. 
+
+**XGBoost WITH feature selection:**\
+  Accuracy:  0.96\
+  Precision: 0.97\
+  Recall:    0.95\
+  F1-Score:  0.96
+
+### DBSCAN:
+<img src="Analysis/Figures/classifiers.png" alt="Project Diagram" width="400"/>
 
 ## Conclusions
 
