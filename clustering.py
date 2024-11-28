@@ -2,14 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
-from kmodes.kmodes import KModes
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 import seaborn as sns
-
 from sklearn.metrics import silhouette_score
-from sklearn.feature_selection import VarianceThreshold
-from sklearn.neighbors import LocalOutlierFactor
 from sklearn.cluster import DBSCAN
 from kmodes.kprototypes import KPrototypes
 
@@ -57,7 +53,7 @@ def kmeans_dbscan_clusters(data):
         'Inflight wifi service',
         'Departure/Arrival time convenient',
         'Ease of Online booking',
-        # 'Gate location',
+        'Gate location',
         # 'Food and drink',
         # 'Online boarding',
         'Seat comfort',
@@ -79,7 +75,7 @@ def kmeans_dbscan_clusters(data):
     # get clustering
     num_kmeans_clusters = 3
     clustering_kmeans = KMeans(n_clusters=num_kmeans_clusters, init='k-means++').fit_predict(pca_data)
-    clustering_dbscan = DBSCAN(eps=2.1, min_samples=26, p=1).fit_predict(pca_data)
+    clustering_dbscan = DBSCAN(eps=2.1, min_samples=100).fit_predict(pca_data)
 
     # silhouette_scores
     score = silhouette_score(pca_data, clustering_kmeans)
