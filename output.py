@@ -1,12 +1,14 @@
+import sys
 import pandas as pd
 from preprocessing import preprocess
+
+sys.path.append('Parameter Tuning')
 from classification import classification
 from outlier_detection import detect_outliers
 from clustering import cluster
 
 train_set = pd.read_csv("./Airline Data/train.csv")
 test_set = pd.read_csv("./Airline Data/test.csv")
-
 
 if __name__ == "__main__":
     # Drop the satisfaction column from both training and testing sets
@@ -31,5 +33,3 @@ if __name__ == "__main__":
     
     # Perform Feature selection and Classification
     # classification(dataset)
-
-
