@@ -114,10 +114,11 @@ The sillhouete scores for KMeans and DBSCAN were very close, typically both arou
 ## Classification
 
 ### Trying different classifiers:
-The three algorithms I did for classification were KNN, XGBoost and RandomForest. I attempted to do SVM, but
-that algorithm was too slow on my dataset, so I skipped it. XGBoost and RandomForest got close to optimal
+Classification allows us to infer whether a certain object belongs to a target class or not. For instance, for this classification task, our target feature is 'satisfaction', which has two values, 'satisfied', and 'neutral or dissatisfied'.
+The three algorithms We did for classification were KNN, XGBoost and RandomForest. we attempted to do SVM, but
+that algorithm was too slow on my dataset, so we skipped it. XGBoost and RandomForest got close to optimal
 results even without hyperparameter tuning, it had good results out of the box. As for KNN, tuning the K value
-made little difference on the results, suggesting that for my problem k does not matter that much. For reference
+made little difference on the results, suggesting that for our problem, k does not matter that much. For reference
 the accuracies are listed below: 
 
 **Model Evaluation on Random Forest:**\
