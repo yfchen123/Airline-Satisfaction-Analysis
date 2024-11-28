@@ -1,7 +1,7 @@
 # CMPT 454 – Airline Survey Analysis Project
 Fall 2024\
-Yun Fei Chen (\<student number\>)\
-David Krljanovic (301427415)
+Yun Fei Chen (yfc9)\
+David Krljanovic (dka78)
 
 ## Table of Contents
 
