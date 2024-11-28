@@ -5,6 +5,7 @@ from sklearn.cluster import KMeans
 from kmodes.kmodes import KModes
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
+import seaborn as sns
 
 from sklearn.metrics import silhouette_score
 from sklearn.feature_selection import VarianceThreshold
@@ -45,6 +46,7 @@ def kmeans_dbscan_clusters(data):
 
     # sample data to improve runtimes since there's a lot of data.
     pca_data = pca_data.sample(frac=0.1)
+    analyze = pca_data.copy()
 
     # Scale
     scaled_data = StandardScaler().fit_transform(pca_data)
@@ -55,13 +57,13 @@ def kmeans_dbscan_clusters(data):
         'Inflight wifi service',
         'Departure/Arrival time convenient',
         'Ease of Online booking',
-        'Gate location',
+        # 'Gate location',
         # 'Food and drink',
-        'Online boarding',
+        # 'Online boarding',
         'Seat comfort',
         'Inflight entertainment',  # drop whatever you want from these.
         'On-board service',  # comment a feature out to keep it in the clustering calc.
-        'Leg room service',
+        #'Leg room service',
         'Baggage handling',
         'Checkin service',
         'Inflight service',
@@ -70,13 +72,14 @@ def kmeans_dbscan_clusters(data):
         'Arrival Delay in Minutes',
         # 'Customer Type',
         # 'Type of Travel',
-        'Class_Business', 'Class_Eco', 'Class_Eco Plus'
+        'Class_Business', 'Class_Eco', 'Class_Eco Plus',
+        'satisfaction'
     ], axis=1)
 
     # get clustering
-    num_kmeans_clusters = 5
+    num_kmeans_clusters = 3
     clustering_kmeans = KMeans(n_clusters=num_kmeans_clusters, init='k-means++').fit_predict(pca_data)
-    clustering_dbscan = DBSCAN(eps=2.1, min_samples=26).fit_predict(pca_data)
+    clustering_dbscan = DBSCAN(eps=2.1, min_samples=26, p=1).fit_predict(pca_data)
 
     # silhouette_scores
     score = silhouette_score(pca_data, clustering_kmeans)
@@ -106,9 +109,14 @@ def kmeans_dbscan_clusters(data):
     plt.ylabel('PC 2')
     plt.savefig(f'Analysis/Figures/dbscan.png')
 
+    # analyze clusterings
+    analyze['kmeans'] = clustering_kmeans
+    analyze['dbscan'] = clustering_dbscan
+    analyze['satisfaction'] = data['satisfaction']
+    analyze_clustering(analyze)
 
 def k_prototypes_cluster(data):
-    print('a')
+    
     pca_data = data.copy()
 
     # Very computationally heavy method. Made data size a lot smaller for testing. Change it however you please.
@@ -147,6 +155,39 @@ def k_prototypes_cluster(data):
     plt.ylabel('PC 2')
     plt.savefig(f'Analysis/Figures/k_prototypes.png')
 
+def analyze_clustering(data):
+
+    pd.set_option('display.max_columns', None)
+    
+    cluster_summary = data.groupby('kmeans').agg({
+    'Age': ['mean', 'median'],
+    'Flight Distance': ['mean', 'median'],
+    'Departure Delay in Minutes': ['mean', 'median'],
+    'Seat comfort': ['mean', 'median'],
+    'Food and drink': ['mean', 'median'],
+    'Leg room service': ['mean', 'median'],
+    'Baggage handling': ['mean', 'median'],
+    'Checkin service': ['mean', 'median'],
+    'Inflight service': ['mean', 'median'],
+    'Class_Business': 'mean',
+    'Class_Eco Plus': 'mean',
+    'Class_Eco' : 'mean',
+    'Type of Travel': 'mean',
+    'Gender': 'mean',
+    'Customer Type': 'mean',
+    'satisfaction' : 'mean'
+                                }).reset_index()
+    
+    print(cluster_summary)
+
+    for cluster in data['kmeans'].unique():
+
+        clst = data[data['kmeans'] == cluster]
+        corr_data = clst.drop(['kmeans','dbscan'], axis=1).corr()
+        plt.figure(figsize=(15, 13))
+        sns.heatmap(corr_data, annot=True, cmap='viridis', fmt=".2f", linewidths=0.4)
+        plt.title(f'kmeans cluster {cluster}')
+        plt.savefig(f'Analysis/Figures/kmeans_{cluster}.png')
 
 def cluster(dataset):
     # prepare data for outlier detection
@@ -155,4 +196,4 @@ def cluster(dataset):
     # k_prototypes_cluster(data)
     kmeans_dbscan_clusters(data)
 
-    k_prototypes_cluster(data)
+    #k_prototypes_cluster(data)

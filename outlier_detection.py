@@ -101,6 +101,7 @@ def isolation_forest_detection(data, remove_outliers=False):
 
 def detect_outliers(dataset):
 
+  print("if an error message appears here, you can ignore it, it is a bug.")
   # prepare data for outlier detection
   data = prepare_data(dataset)
 

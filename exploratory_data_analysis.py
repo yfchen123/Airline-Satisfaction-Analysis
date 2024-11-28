@@ -67,7 +67,7 @@ def class_analysis(data):
     plot.set_axis_labels("Class", "Count")
     plot.fig.suptitle('class satisfaction barplot')
     plt.legend(loc='upper right', bbox_to_anchor=(1, 0.95))
-    plt.savefig('./Figures/class_satisfaction_barplot.png')
+    plt.savefig('./Analysis/Figures/class_satisfaction_barplot.png')
 
     print("Saved class_satisfaction_barplot.png in Analysis/Figures/")
 
@@ -144,7 +144,7 @@ def heatmapping(data, title, colour, filename):
     plt.figure(figsize=(15, 13))
     sns.heatmap(corr_data, annot=True, cmap=colour, fmt=".2f", linewidths=0.4)
     plt.title(title)
-    plt.savefig(f'./Figures/{filename}')
+    plt.savefig(f'./Analysis/Figures/{filename}')
 
 
 def type_of_travel(data):
@@ -181,7 +181,7 @@ def type_of_travel(data):
     plot.set_axis_labels("Type of Travel", "Count")
     plot.fig.suptitle('Type of Travel vs Satisfaction barplot')
     plt.legend(loc='upper right', bbox_to_anchor=(1, 0.95))
-    plt.savefig('./Figures/Type_of_Travel_Satisfaction_barplot.png')
+    plt.savefig('./Analysis/Figures/Type_of_Travel_Satisfaction_barplot.png')
 
     print("Saved Type_of_Travel_Satisfaction_barplot.png in Analysis/Figures/")
 
@@ -197,7 +197,7 @@ def scatter_and_correlate(d, colour, title, filename):
     plt.figure(figsize=(12, 6))
     sns.scatterplot(x='Flight Distance', y='Arrival Delay in Minutes', data=d, color=colour)
     plt.title(title)
-    plt.savefig(f'./Figures/{filename}')
+    plt.savefig(f'./Analysis/Figures/{filename}')
 
     print(f"Saved {filename} in Analysis/Figures/")
 
@@ -210,7 +210,7 @@ def class_histogram(d, field, colour, classname, filename, num_bins=20):
     plt.figure(figsize=(10, 6))
     sns.histplot(hist_data, kde=True, bins=num_bins, color=colour)
     plt.title(f'{field} distribution of {classname} class')
-    plt.savefig(f'./Figures/{filename}')
+    plt.savefig(f'./Analysis/Figures/{filename}')
 
     print(f"Saved {filename} in Analysis/Figures/")
 
@@ -218,20 +218,21 @@ def class_histogram(d, field, colour, classname, filename, num_bins=20):
     return hist_data
 
 
-fileA = '../Airline Data/train.csv'
-fileB = '../Airline Data/test.csv'
+def doEDA():
+    fileA = './Airline Data/train.csv'
+    fileB = './Airline Data/test.csv'
 
-data1 = merge_data(fileA, fileB)
+    data1 = merge_data(fileA, fileB)
 
-class_analysis(data1)
+    class_analysis(data1)
 
-distance_and_delay(data1)
+    distance_and_delay(data1)
 
-fileA = '../Preprocessed Data/train.csv'
-fileB = '../Preprocessed Data/test.csv'
+    fileA = './Preprocessed Data/train.csv'
+    fileB = './Preprocessed Data/test.csv'
 
-data2 = merge_data(fileA, fileB)
+    data2 = merge_data(fileA, fileB)
 
-heatmapping(data=data2, title='Heatmap of all Features', colour='rocket', filename='heatmap_all_features.png')
+    heatmapping(data=data2, title='Heatmap of all Features', colour='rocket', filename='heatmap_all_features.png')
 
-type_of_travel(data1)
+    type_of_travel(data1)
