@@ -77,18 +77,17 @@ The heatmap also identifies a consistent correlation disparity between the diffe
 
 ## Outlier Detection
 
-Outlier detection is the removal of datapoints that signficantly deviate from the main distribution of data. To do this task, we leveraged the use of Local Outlier Factor (LOF) and Isolation forest methods. Using the preprocessed data, we fit each of the datasets to their specified and reduce data dimensionality to two dimensions using Principal Component Analysis (PCA). Following dimensionality reduction, we plot a scattleplot the results of each method by separating the data into respective dataframes of inliers and outliers, distinguishing dataframe membership by colour (green and red, respectively).
+Outlier detection is the removal of datapoints that signficantly deviate from the main distribution of data. To do this task, we leveraged the use of Local Outlier Factor (LOF) and Isolation forest methods. Using the preprocessed data, we first made the decision to randomly sample the data in favour of efficiency; LOF is a computationally demanding model, and our dataset of over 100,000 records was taking too long to process. Furthermore, we scaled the data using sklearn's standardScalar function. This was done because LOF is a distance dependant method, and differing scales of data will affect the models ability to appropriately classify outliers. We scaled both LOF and Isolation forest to get a fair comparison. Following scaling and sampling, we fit each of the datasets to their specified and reduced data dimensionality to two dimensions using Principal Component Analysis (PCA). Following dimensionality reduction, we plotted a scatterplot the results of each method by separating the data into respective dataframes of inliers and outliers, distinguishing dataframe membership by colour (green and red, respectively).
 
-### LOF
+### LOF (n_neighbors=20, contamination=0.01)
 
 <img src="Analysis/Figures/LOF.png" alt="Project Diagram" width="400"/>
 
-### Isolation Forest
+### Isolation Forest (contamination=0.01)
 
 <img src="Analysis/Figures/isolation_forest_outliers.png" alt="Project Diagram" width="400"/>
 
-The results of each outlier detection method were not particularily useful.
-
+The results of each outlier detection method, although seemingly different in the visualization, were not particularily useful. Many of the points categorized as outliers appeared to belong to the inlier class, deep within the single cluster of data. The conclusion that we drew from this result was that the data had possible already been cleaned prior to our own preprocessing. Some of the chosen points appear to be on the edge of the cluster of data, but too many of the points are present deep in the cluster too label all of the selected points as noise. Adjusting contamination parameters did not improve performance either. We made the decision to not remove the chosen points from the dataset prior to the clustering and classifiaction tasks as there was not enough convincing edivdence that these points were majority noise.
 
 ## Clustering
 
