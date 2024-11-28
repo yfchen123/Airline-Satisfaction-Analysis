@@ -101,7 +101,7 @@ We tested clustering using many diffrent models, but settled on KMeans and DBSCA
 ### DBSCAN:
 <img src="Analysis/Figures/dbscan.png" alt="Project Diagram" width="400"/>
 
-The sillhouete scores for KMeans and DBSCAN were very close, typically both around 0.210. This score is not terrible, but it is very weak. When we add back the clustering results of KMeans to the preoprocessed data prior to dropping features, we can determine trends by assessing the mean and median values of each feature within each cluster.
+The sillhouete scores for KMeans and DBSCAN were very close, typically both around 0.210. This score is not terrible, but it is very weak. When we add back the clustering results of KMeans to the preoprocessed data prior to dropping features, we can determine trends by assessing the mean and median values of each feature within each cluster. Furthermore, DBSCAN appears to contain noise, but in our opinion, does a better job at correctly defining the center (blue) cluster. 
 
  Looking at the printed results, we find that the largest mean proportion of satisfied customers (73%) lies within the cluster of which the majority of customers belong to business class (78%). This is unsurprising, given that in our heatmap and other analysis from EDA, we discovered a strong relationship between airline class and satisfaction. Within this same cluster is also almost entirely comprised of loyal customers, who are typically older and fly greater distances than the other clusters. It would seem that from this data, that older, long distance business class fliers are for the most part, satisfied with their service. 
 
@@ -147,8 +147,17 @@ Using a mutual information feature selection model from sklearn, we find that ou
   Recall:    0.95\
   F1-Score:  0.96
 
-### DBSCAN:
+### Overview of Classifier performance:
 <img src="Analysis/Figures/classifiers.png" alt="Project Diagram" width="400"/>
 
 ## Conclusions
 
+This dataset, at some points, was tricky to work with.However, what we have discovered is that:
+
+- Outlier detection does not provide meaningful outliers/noise for removal. The data may have already been precprocessed and cleaned. 
+
+- We are able to classify customers, very accurately, as either satisfied or neutral/disatisfied based on the collection of their responses. This could help companies determine what exact areas they need to improve in, business-wise, to improve their customer retention.
+
+- Clustering may not be the best option for this dataset. It appears to have already been cleaned, and that could have impacted the variance of the data to the point where relationships cannot be infered properly. Furthermore, of the remaning features and objects, there exist numerous correlations that further obsucre the data by contributing to overlapping clusters. However, our data does show that, loyal business class flyers are typically very satisfied with their experience, and loyal economy fliers, although majority not satisfied, will continue to be loyal customers (due to unknown factors).
+
+We have learned a lot about this process. Coding this project was not the main challenge. Rather, interpreting our results, finding meaningful patterns, and presenting the data in a thoughtful manner, were much harder to get right. 
