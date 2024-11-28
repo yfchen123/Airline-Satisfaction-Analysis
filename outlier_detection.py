@@ -36,6 +36,10 @@ def LOF_detection(pca_data, remove_outliers=False):
   # This function detects outliers and can remove them if desired, via LOF.
   # Also visualizes the outliers in 2 dimensions.
 
+  # LOF needs to be scaled because it relies on distance based metrics.
+  scaled_data = StandardScaler().fit_transform(pca_data)
+  pca_data.iloc[:, :] = scaled_data
+
   # detect outliers
   outliers = LocalOutlierFactor(n_neighbors=20, contamination=0.01).fit_predict(pca_data)
 
@@ -67,6 +71,10 @@ def LOF_detection(pca_data, remove_outliers=False):
 def isolation_forest_detection(data, remove_outliers=False):
   # This function detects outliers via IsolationForest and can remove them if desired.
   # visualizes the outliers.
+
+  # We scale here because we scaled LOF
+  scaled_data = StandardScaler().fit_transform(data)
+  data.iloc[:, :] = scaled_data
   
   # Do outlier detection on data
   outliers = IsolationForest(contamination=0.01).fit_predict(data)
