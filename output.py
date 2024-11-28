@@ -34,7 +34,7 @@ if __name__ == "__main__":
     # Perform Outlier Detection
     detect_outliers(dataset)
     
-    print('\n CLUTSERING \n ')
+    print('\n CLUSTERING \n ')
     # Perform Clustering
     cluster(dataset)
     

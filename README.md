@@ -73,7 +73,7 @@ Very similar results are evident in the type of travel; customers flying for bus
 <img src="Analysis/Figures/Type_of_Travel_Satisfaction_barplot.png" alt="Project Diagram" width="400"/>
 
 
-The heatmap also identifies a consistent correlation disparity between the different elements of a flight experience and airline classes as well. Business class typically positively correlates with a greater customer satisfaction in each service, and economy class typically negatively correlates. Moreover, the different categories of in-flight experience influence each other as well. For example, a higher satisfaction in flight cleanliness positively correlates moderately with satisfaction in the food a drink category.
+The heatmap also identifies a consistent correlation disparity between the different elements of a flight experience and airline classes as well. Business class typically positively correlates with a greater customer satisfaction in each service, and economy class typically negatively correlates. Moreover, the different categories of in-flight experience influence each other as well. For example, a higher satisfaction in flight cleanliness positively correlates moderately with satisfaction in the food a drink category. The common correlations of features may also pose a problem to the clustering task.
 
 ## Outlier Detection
 
@@ -90,6 +90,22 @@ Outlier detection is the removal of datapoints that signficantly deviate from th
 The results of each outlier detection method, although seemingly different in the visualization, were not particularily useful. Many of the points categorized as outliers appeared to belong to the inlier class, deep within the single cluster of data. The conclusion that we drew from this result was that the data had possible already been cleaned prior to our own preprocessing. Some of the chosen points appear to be on the edge of the cluster of data, but too many of the points are present deep in the cluster too label all of the selected points as noise. Adjusting contamination parameters did not improve performance either. We made the decision to not remove the chosen points from the dataset prior to the clustering and classifiaction tasks as there was not enough convincing edivdence that these points were majority noise.
 
 ## Clustering
+
+Clustering for this dataset was especially difficult. One of the problems with the dataset that our heatmap uncovered during the EDA task was that much of the data was in some way correlated. Correlated data is bad for clustering algorithms – it negatively impacts data in such a way that makes it difficult for clustering tasks to distinguish meaningful groupings of data. In order to get valuable results from this (preprocessed) dataset, we had to manually select groupings of features that were not correlated using pandas' drop function. The more columns we dropped, the higher the silhouette scores would be, but we did not want to drop too many features in fear of losing information. Even after dropping several columns of data, the silhouette score functions were not reporting promising results. 
+
+We tested clustering using many diffrent models, but settled on KMeans and DBSCAN as they were outputting the highest silhouette scores. Prior to running each clustering algorithm, we first scaled the data using sklearn's standardScalar function. This is done so that the data can be effectively visualized within a common range, and also because both KMeans and DBSCAN use distance metrics to cluster objects together. In Kmeans Clustering, the hyperparameters were set as n_cluster=3 and init='kmeans'++. 3 clusters was yielding the highest silhouette scores, and we felt that kmeans++ was more optimal over random initialization. For DBSCAN, hyperparameter eps was set to 2.1 and min_samples was set to 100. These hyperparameters were determined expirimentally. Following clutsering, the dimensionality of the data was reduced to 2 using PCA for visualization purposes:
+
+### KMeans:
+<img src="Analysis/Figures/kmeans.png" alt="Project Diagram" width="400"/>
+
+### DBSCAN:
+<img src="Analysis/Figures/dbscan.png" alt="Project Diagram" width="400"/>
+
+The sillhouete scores for KMeans and DBSCAN were very close, typically both around 0.210. This score is not terrible, but it is very weak. When we add back the clustering results of KMeans to the preoprocessed data prior to dropping features, we can determine trends by assessing the mean and median values of each feature within each cluster.
+
+ Looking at the printed results, we find that the largest mean proportion of satisfied customers (73%) lies within the cluster of which the majority of customers belong to business class (78%). This is unsurprising, given that in our heatmap and other analysis from EDA, we discovered a strong relationship between airline class and satisfaction. Within this same cluster is also almost entirely comprised of loyal customers, who are typically older and fly greater distances than the other clusters. It would seem that from this data, that older, long distance business class fliers are for the most part, satisfied with their service. 
+
+ On the other hand, another cluster the same proportion of loyal customers (nearly 100%) as our previously discussed clusters, but only has rougly 11% of its customers satisfied! 80% of these customers are in the economy class, 12% are in economy plus, and the final 8% of customers are business class. Even if all of those 10% satisfied customers came from the economy class, that would still mean that 70% of loyal economy class fliers will return to this particular airline despite their dissatisfaction. This is quite a valuable finding! It means that loyal economy fliers do not need to be satisfied in order to return to this using this airline. We cannot be certain as to why, but we know that the satisfaction of economy class fliers is not as important as that of the business class fliers.
 
 ## Feature selection
 
