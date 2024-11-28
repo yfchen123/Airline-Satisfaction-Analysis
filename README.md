@@ -77,6 +77,19 @@ The heatmap also identifies a consistent correlation disparity between the diffe
 
 ## Outlier Detection
 
+Outlier detection is the removal of datapoints that signficantly deviate from the main distribution of data. To do this task, we leveraged the use of Local Outlier Factor (LOF) and Isolation forest methods. Using the preprocessed data, we fit each of the datasets to their specified and reduce data dimensionality to two dimensions using Principal Component Analysis (PCA). Following dimensionality reduction, we plot a scattleplot the results of each method by separating the data into respective dataframes of inliers and outliers, distinguishing dataframe membership by colour (green and red, respectively).
+
+### LOF
+
+<img src="Analysis/Figures/LOF.png" alt="Project Diagram" width="400"/>
+
+### Isolation Forest
+
+<img src="Analysis/Figures/isolation_forest_outliers.png" alt="Project Diagram" width="400"/>
+
+The results of each outlier detection method were not particularily useful.
+
+
 ## Clustering
 
 ## Feature selection
