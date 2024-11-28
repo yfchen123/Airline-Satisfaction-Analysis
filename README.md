@@ -7,7 +7,6 @@ David Krljanovic (301427415)
 
 - [Introduction](#introduction)
  
-
 - [Preprocessing](#preprocessing)
 
 - [Exploratory Data Analysis](#exploratory-data-analysis)
@@ -27,8 +26,8 @@ Using a [Kaggle-sourced dataset](https://www.kaggle.com/datasets/teejmahal20/air
 
 ## Exploratory Data Analysis
 
-## Clustering
 
 ## Classification
 
 ## Conclusions
+
