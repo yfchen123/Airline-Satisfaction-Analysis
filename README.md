@@ -95,5 +95,32 @@ The results of each outlier detection method, although seemingly different in th
 
 ## Classification
 
+The three algorithms I did for classification were KNN, XGBoost and RandomForest. I attempted to do SVM, but
+that algorithm was too slow on my dataset, so I skipped it. XGBoost and RandomForest got close to optimal
+results even without hyperparameter tuning, it had good results out of the box. As for KNN, tuning the K value
+made little difference on the results, suggesting that for my problem k does not matter that much. For reference
+the accuracies are listed below: 
+
+Model Evaluation on Random Forest:
+
+  Accuracy:  0.96
+  Precision: 0.97
+  Recall:    0.94
+  F1-Score:  0.96
+
+Model Evaluation on XGBoost:
+
+  Accuracy:  0.96
+  Precision: 0.97
+  Recall:    0.95
+  F1-Score:  0.96
+
+KNN with k=3:
+  Accuracy:  0.93
+  Precision: 0.94
+  Recall:    0.90
+  F1-Score:  0.92
+  AUC-ROC:   0.96
+
 ## Conclusions
 

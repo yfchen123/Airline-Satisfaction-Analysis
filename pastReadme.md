@@ -72,7 +72,7 @@ for this problem.
 I tried to use SVM however due to the vastness of my dataset, the algorithm will not terminate, so I decided
 to switch to a more efficient algorithm called XGBoost.
 
-XGBoost gives me a similar result out of the box as well so it seems to be good for this dataset:
+XGBoost gives me a similar result out of the box as well, so it seems to be good for this dataset:
 Model Evaluation on XGBoost:
 
   Accuracy:  0.96
