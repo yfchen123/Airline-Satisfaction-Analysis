@@ -24,6 +24,8 @@ Using a [Kaggle-sourced dataset](https://www.kaggle.com/datasets/teejmahal20/air
 
 ## Preprocessing
 
+Preprocessing data is important: We need to be able to format the information we have in way that optimizes tasks that we plan on performing. For instance, we first removed any objects with null values. This is done to remove any conflicts between the data and any models that we may use; some models may not be able to handle null values. Furthermore, We normalize the data. This allows for a more accurate clear representation of data that the models can better understand, and the data is far easier to plot and visualize following data cleaning.
+
 ## Exploratory Data Analysis
 
 Before running data mining tasks such as clustering and classification, it is important that we have some basic understandings concerning the distribution of our dataset. We can determine simple relationships and trends using basic inferential statistics and visualization techniques. We also decided to take a closer look at the relationships between specific key features that may help explain the results of future analysis in the clustering and classification tasks.
@@ -147,8 +149,125 @@ Using a mutual information feature selection model from sklearn, we find that ou
   Recall:    0.95\
   F1-Score:  0.96
 
-### Overview of Classifier performance:
+### Overview of Classifier performance thus far:
 <img src="Analysis/Figures/classifiers.png" alt="Project Diagram" width="400"/>
+
+### Hyperparameter Tuning:
+
+XGBoost for max depth:
+![](Parameter%20Tuning/XGBoost/XGBoost_max_depth_final.png)
+
+7 seems to be optimal:
+Evaluating XGBoost with max_depth=7...
+  max_depth: 7
+  Accuracy:  0.96408
+  Precision: 0.97222
+  Recall:    0.94519
+  F1-Score:  0.95851
+  AUC-ROC:   0.99510
+
+Here is the graph for min_child_weight:
+![](Parameter%20Tuning/XGBoost/XGBoost_min_child_weight.png)
+
+2 seems to be optimal:
+Evaluating XGBoost with min_child_weight=2...
+  min_child_weight: 2
+  Accuracy:  0.96416
+  Precision: 0.97146
+  Recall:    0.94615
+  F1-Score:  0.95864
+  AUC-ROC:   0.99504
+
+Gamma attribute:
+![](Parameter%20Tuning/XGBoost/XGBoost_gamma.png)
+
+Seems like the default of 0 is best:
+Evaluating XGBoost with gamma=0...
+  gamma: 0
+  Accuracy:  0.96416
+  Precision: 0.97146
+  Recall:    0.94615
+  F1-Score:  0.95864
+  AUC-ROC:   0.99504
+
+Next doing lambda:
+![](Parameter%20Tuning/XGBoost/XGBoost_lambda.png)
+
+The optimal appears to be 3:
+Evaluating XGBoost with reg_lambda=3...
+  reg_lambda: 3
+  Accuracy:  0.96424
+  Precision: 0.97197
+  Recall:    0.94580
+  F1-Score:  0.95871
+  AUC-ROC:   0.99524
+
+Alpha:
+Leaving it as 0 seems good:
+
+Evaluating XGBoost with alpha=0...
+  alpha: 0
+  Accuracy:  0.96424
+  Precision: 0.97197
+  Recall:    0.94580
+  F1-Score:  0.95871
+  AUC-ROC:   0.99524
+
+n_estimators:
+125 and 126 have the same accuracy, so I will just use 125.
+![](Parameter%20Tuning/XGBoost/XGBoost_n_estimators_final.png)
+
+Results for 125:
+
+Evaluating XGBoost with n_estimators=125...
+  n_estimators: 125
+  Accuracy:  0.96431
+  Precision: 0.97155
+  Recall:    0.94642
+  F1-Score:  0.95882
+  AUC-ROC:   0.99519
+
+Graph for Learning Rate:
+![](Parameter%20Tuning/XGBoost/Learning_rate_final.png)
+
+Optimal seems to be 0.3:
+Evaluating XGBoost with learning_rate=0.30...
+  Learning Rate: 0.30
+  Accuracy:  0.96431
+  Precision: 0.97155
+  Recall:    0.94642
+  F1-Score:  0.95882
+  AUC-ROC:   0.99519
+
+GPU_Hist:
+  Accuracy:  0.96312
+  Precision: 0.97088
+  Recall:    0.94431
+  F1-Score:  0.95741
+  AUC-ROC:   0.99510
+
+Hist:
+  Accuracy:  0.96431
+  Precision: 0.97155
+  Recall:    0.94642
+  F1-Score:  0.95882
+  AUC-ROC:   0.99519
+
+Approx:
+  Accuracy:  0.96347
+  Precision: 0.97082
+  Recall:    0.94519
+  F1-Score:  0.95783
+  AUC-ROC:   0.99506
+
+Exact:
+  Accuracy:  0.96374
+  Precision: 0.97083
+  Recall:    0.94580
+  F1-Score:  0.95816
+  AUC-ROC:   0.99528
+
+We will just stick with auto since it gives the best performance.
 
 ## Conclusions
 
@@ -156,7 +275,9 @@ This dataset, at some points, was tricky to work with.However, what we have disc
 
 - Outlier detection does not provide meaningful outliers/noise for removal. The data may have already been precprocessed and cleaned. 
 
-- We are able to classify customers, very accurately, as either satisfied or neutral/disatisfied based on the collection of their responses. This could help companies determine what exact areas they need to improve in, business-wise, to improve their customer retention.
+- We are able to classify customers, very accurately, as either satisfied or neutral/disatisfied based on the collection of their responses. This could help companies determine what exact areas they need to improve in, business-wise, to improve their customer retention. 
+
+- Feature selection and hyperparameter tuning prove to show little to no improvement in the already excellent classification score. This further reinforces the idea that perhaps our dataset was carefully cleaned and prepared for a classification model.
 
 - Clustering may not be the best option for this dataset. It appears to have already been cleaned, and that could have impacted the variance of the data to the point where relationships cannot be infered properly. Furthermore, of the remaning features and objects, there exist numerous correlations that further obsucre the data by contributing to overlapping clusters. However, our data does show that, loyal business class flyers are typically very satisfied with their experience, and loyal economy fliers, although majority not satisfied, will continue to be loyal customers (due to unknown factors).
 
