@@ -1,86 +1,34 @@
-# Airline-Satisfaction-Analysis
-Analysis on Airline Satisfaction
+# CMPT 454 – Airline Survey Analysis Project
+Fall 2024\
+Yun Fei Chen (\<student number\>)\
+David Krljanovic (301427415)
 
-You should clone main branch for the new issues and create a new branch.  
+## Table of Contents
 
-PLEASE DO NOT MERGE INCORRECT OR NOT WORKING CODE ONTO THE MAIN BRANCH, DO NOT MERGE BRANCHES WITHOUT A PULL REQUEST.
+- [Introduction](#introduction)
+ 
 
-Issue 3: Note that the dataset is very skewed for some attributes so this may present an issue when doing
-classification or clustering. Perhaps you should check these before doing decision trees or rely on some
-technique that does not assume a normal distribution. 
+- [Preprocessing](#preprocessing)
 
-Classification: For the classification I started with KNN, I noticed that the accuracy is very similar across
-different values of K and starts to drop for large K. Suggesting that we do not need a large number of neighbor
-points to make an accurate prediction. 
+- [Exploratory Data Analysis](#exploratory-data-analysis)
 
-The table looks like the following:
+- [Clustering](#clustering)
 
-KNN with k=1:
-  Accuracy:  0.92
-  Precision: 0.91
-  Recall:    0.90
-  F1-Score:  0.90
-  AUC-ROC:   0.91
+- [Classification](#classification)
 
-KNN with k=3:
-  Accuracy:  0.93
-  Precision: 0.94
-  Recall:    0.90
-  F1-Score:  0.92
-  AUC-ROC:   0.96
+- [Conclusions](#conclusions)
 
-KNN with k=5:
-  Accuracy:  0.93
-  Precision: 0.95
-  Recall:    0.90
-  F1-Score:  0.92
-  AUC-ROC:   0.98
+## Introduction
+Spirit Airlines Inc. is a popular American airline known for it's affordable airfare, and poor service and overall customer experience. Frequent delays, uncomfortable seats, and questionably terrible in-flight service plagues travelers on their journies to their target destinations. One could argue that the sole purpose of a plane is to transport people from point A to point B, and that selling an experience is not a necessity. This begs the question: Does the quality of these services actually influence the satisfaction of airline customers to a significant degree? This is a good question to ask – a business certainly does not wish to deter its target demographics from considering them for future travels. It is worth noting that as of recent, Spirit Airlines stock has fallen ninety-five percent in the the last year, and the company has filed for bankruptcy. 
 
-KNN with k=7:
-  Accuracy:  0.93
-  Precision: 0.95
-  Recall:    0.90
-  F1-Score:  0.92
-  AUC-ROC:   0.98
+Using a [Kaggle-sourced dataset](https://www.kaggle.com/datasets/teejmahal20/airline-passenger-satisfaction/data) containing over 100,000 airline customer satisfaction survey results of 24 features, we will perform data mining techniques to uncover hidden patterns and information that may prove to be useful to data scientists and businesses alike. Following a routine preprocessing of the data, exploratory data analysis will reveal surface level information that will serve to guide the procedure of machine learning clustering and classification tasks. Each section will serve as an overview of our procedure, and the final section will conclude our findings and attempt to present a meaningful discovery.
 
-KNN with k=15:
-  Accuracy:  0.93
-  Precision: 0.95
-  Recall:    0.89
-  F1-Score:  0.92
-  AUC-ROC:   0.98
+## Preprocessing
 
-KNN with k=50:
-  Accuracy:  0.92
-  Precision: 0.95
-  Recall:    0.87
-  F1-Score:  0.91
-  AUC-ROC:   0.98
+## Exploratory Data Analysis
 
-RandomForest without any parameter tuning gets us great results right out of the box:
+## Clustering
 
-Model Evaluation on Random Forest:
+## Classification
 
-  Accuracy:  0.96
-  Precision: 0.97
-  Recall:    0.94
-  F1-Score:  0.96
-
-The accuracy is much higher than possible with KNN. Suggesting that Random Forest is an excellent choice 
-for this problem. 
-
-I tried to use SVM however due to the vastness of my dataset, the algorithm will not terminate, so I decided
-to switch to a more efficient algorithm called XGBoost.
-
-XGBoost gives me a similar result out of the box as well so it seems to be good for this dataset:
-Model Evaluation on XGBoost:
-
-  Accuracy:  0.96
-  Precision: 0.97
-  Recall:    0.95
-  F1-Score:  0.96
-
-In general, it appears that for my dataset XGBoost and Random Forest work well out of the box and do not 
-need much hyperparameter tuning, as well it seems hyperparameter tuning does not help KNN much.
-
-
+## Conclusions
